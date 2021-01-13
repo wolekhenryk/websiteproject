@@ -70,7 +70,7 @@
         <div class="container">
           <div class="col-lg-12">
             <div class="well">
-              <form action="" class="form-horizontal">
+              <form action="" class="form-horizontal" id="mainFormInput">
                 <fieldset>
                   <div class="row justify-content-center">
                     <!-- DIESEL -->
@@ -1143,7 +1143,11 @@
                   <div class="row justify-content-center mt-3">
                     <div class="form-group" style="text-align: right">
                       <div class="col-lg-12">
-                        <button type="reset" class="btn btn-secondary">
+                        <button
+                          type="reset"
+                          onclick="resetAllRange()"
+                          class="btn btn-secondary"
+                        >
                           Reset
                         </button>
                         <button type="submit" class="btn btn-primary">
