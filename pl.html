@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Trolley: 2.0</title>
+
+    <!-- Scripts -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/rangeController.js"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/b6867008d9.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Styles -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+  </head>
+  <body style="font-family: 'Varela Round', sans-serif">
+    <div id="app">
+      <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <div class="container align-baseline">
+          <a class="navbar-brand" style="font-size: 28px" href="/"
+            >Trolley: 2.0</a
+          >
+          <div class="d-flex">
+            <div class="input-group">
+              <button
+                class="btn btn-outline-secondary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Język
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="/">English</a></li>
+                <li>
+                  <a class="dropdown-item" href="/">Polski</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <main class="py-4">
+        <div class="container">
+          <div class="col-lg-12">
+            <div class="well">
+              <form action="" class="form-horizontal">
+                <fieldset>
+                  <div class="row justify-content-center">
+                    <!-- DIESEL -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <h1 class="display-4">Diesel</h1>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings0_energyCost"
+                          ><strong
+                            >Cena jednostkowa energii [EUR/kWh]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-euro-sign m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings0_energyCost"
+                            name="settings[0][energyCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Energy cost"
+                            step="0.01"
+                            type="number"
+                            required
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings0_electricCost"
+                          ><strong
+                            >Stały koszt energii elektrycznej (jeśli występuje)
+                            [EUR/miesiąc]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-plug m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings0_electricCost"
+                            name="settings[0][electricCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings0_batteryCapacity"
+                          ><strong
+                            >Wymagana pojemność baterii [kWh]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-bolt m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings0_batteryCapacity"
+                            name="settings[0][batteryCapacity]"
+                            value="0"
+                            min="0"
+                            placeholder="Battery capacity"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings0_chargersNumber"
+                          ><strong
+                            >Wymagana liczba ładowarek [sztuki]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-charging-station m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings0_chargersNumber"
+                            name="settings[0][chargersNumber]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Chargers number"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings0_newWires"
+                          ><strong
+                            >Wymagana długość nowej infrastruktury
+                            [kmtp]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-project-diagram m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings0_newWires"
+                            name="settings[0][newWires]"
+                            value="0"
+                            min="0"
+                            placeholder="New wires"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings0_modernisedWires"
+                          ><strong
+                            >Wymagana długość modernizowanej infrastruktury
+                            [kmtp]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-retweet m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings0_modernisedWires"
+                            name="settings[0][modernisedWires]"
+                            value="0"
+                            min="0"
+                            placeholder="Modernised wires"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings0_newDistance"
+                          ><strong
+                            >Długość trasy pokonywanej pod nową siecią trakcyjną
+                            [%]</strong
+                          ></label
+                        >
+                        <div class="row">
+                          <div class="input-group">
+                            <input
+                              id="settings0_newDistance"
+                              name="settings[0][newDistance]"
+                              value="0"
+                              min="0"
+                              max="100"
+                              step="1"
+                              type="range"
+                              required=""
+                              oninput="overallDistance0(this.value);"
+                              class="form-range"
+                            />
+                          </div>
+                          <span id="overallDistance0val">0</span>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings0_modernisedDistance"
+                          ><strong
+                            >Długość trasy pokonywanej pod modernizowaną siecią
+                            trakcyjną [%]</strong
+                          ></label
+                        >
+                        <div class="row">
+                          <div class="input-group">
+                            <input
+                              id="settings0_modernisedDistance"
+                              name="settings[0][modernisedDistance]"
+                              value="0"
+                              min="0"
+                              max="100"
+                              step="1"
+                              type="range"
+                              required=""
+                              oninput="modernisedDistance0(this.value);"
+                              class="form-range"
+                            />
+                          </div>
+
+                          <span id="modernisedDistance0val">0</span>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings0_overallDistance"
+                          ><strong
+                            >Łączna długość trasy pokonywanej pod siecią
+                            trakcyjną [%]</strong
+                          ></label
+                        >
+                        <div class="row">
+                          <div class="input-group">
+                            <input
+                              id="settings0_overallDistance"
+                              name="settings[0][overallDistance]"
+                              value="0"
+                              min="0"
+                              max="100"
+                              step="1"
+                              type="range"
+                              required=""
+                              oninput="overallDistance0(this.value);"
+                              class="form-range"
+                            />
+                          </div>
+                          <span id="overallDistance0val">0</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- EV 1 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <h1 class="display-4">EV 1</h1>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings1_energyCost"
+                          ><strong
+                            >Cena jednostkowa energii [EUR/kWh]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-euro-sign m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings1_energyCost"
+                            name="settings[1][energyCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Energy cost"
+                            step="0.01"
+                            type="number"
+                            required
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings1_electricCost"
+                          ><strong
+                            >Stały koszt energii elektrycznej (jeśli występuje)
+                            [EUR/miesiąc]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-plug m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings1_electricCost"
+                            name="settings[1][electricCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings1_batteryCapacity"
+                          ><strong
+                            >Wymagana pojemność baterii [kWh]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-bolt m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings1_batteryCapacity"
+                            name="settings[1][batteryCapacity]"
+                            value="0"
+                            min="0"
+                            placeholder="Battery capacity"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings1_chargersNumber"
+                          ><strong
+                            >Wymagana liczba ładowarek [sztuki]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-charging-station m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings1_chargersNumber"
+                            name="settings[1][chargersNumber]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Chargers number"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings1_newWires"
+                          ><strong
+                            >Wymagana długość nowej infrastruktury
+                            [kmtp]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-project-diagram m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings1_newWires"
+                            name="settings[1][newWires]"
+                            value="0"
+                            min="0"
+                            placeholder="New wires"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings1_modernisedWires"
+                          ><strong
+                            >Wymagana długość modernizowanej infrastruktury
+                            [kmtp]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-retweet m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings1_modernisedWires"
+                            name="settings[1][modernisedWires]"
+                            value="0"
+                            min="0"
+                            placeholder="Modernised wires"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings1_newDistance"
+                          ><strong
+                            >Długość trasy pokonywanej pod nową siecią trakcyjną
+                            [%]</strong
+                          ></label
+                        >
+                        <div class="row">
+                          <div class="input-group">
+                            <input
+                              id="settings1_newDistance"
+                              name="settings[1][newDistance]"
+                              value="0"
+                              min="0"
+                              max="100"
+                              step="1"
+                              type="range"
+                              required=""
+                              oninput="overallDistance1(this.value);"
+                              class="form-range"
+                            />
+                          </div>
+                          <span id="overallDistance1val">0</span>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings1_modernisedDistance"
+                          ><strong
+                            >Długość trasy pokonywanej pod modernizowaną siecią
+                            trakcyjną [%]</strong
+                          ></label
+                        >
+                        <div class="row">
+                          <div class="input-group">
+                            <input
+                              id="settings1_modernisedDistance"
+                              name="settings[1][modernisedDistance]"
+                              value="0"
+                              min="0"
+                              max="100"
+                              step="1"
+                              type="range"
+                              required=""
+                              oninput="modernisedDistance1(this.value);"
+                              class="form-range"
+                            />
+                          </div>
+
+                          <span id="modernisedDistance1val">0</span>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings1_overallDistance"
+                          ><strong
+                            >Łączna długość trasy pokonywanej pod siecią
+                            trakcyjną [%]</strong
+                          ></label
+                        >
+                        <div class="row">
+                          <div class="input-group">
+                            <input
+                              id="settings1_overallDistance"
+                              name="settings[1][overallDistance]"
+                              value="0"
+                              min="0"
+                              max="100"
+                              step="1"
+                              type="range"
+                              required=""
+                              oninput="overallDistance1(this.value);"
+                              class="form-range"
+                            />
+                          </div>
+                          <span id="overallDistance1val">0</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row justify-content-center">
+                    <!-- EV  2-->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <h1 class="display-4">EV 2</h1>
+                      </div>
+
+                      <!-- Input group -->
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings2_energyCost"
+                          ><strong
+                            >Cena jednostkowa energii [EUR/kWh]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-euro-sign m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings2_energyCost"
+                            name="settings[2][energyCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Energy cost"
+                            step="0.01"
+                            type="number"
+                            required
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings2_electricCost"
+                          ><strong
+                            >Stały koszt energii elektrycznej (jeśli występuje)
+                            [EUR/miesiąc]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-plug m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings2_electricCost"
+                            name="settings[2][electricCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings2_batteryCapacity"
+                          ><strong
+                            >Wymagana pojemność baterii [kWh]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-bolt m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings2_batteryCapacity"
+                            name="settings[2][batteryCapacity]"
+                            value="0"
+                            min="0"
+                            placeholder="Battery capacity"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings2_chargersNumber"
+                          ><strong
+                            >Wymagana liczba ładowarek [sztuki]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-charging-station m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings2_chargersNumber"
+                            name="settings[2][chargersNumber]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Chargers number"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings2_newWires"
+                          ><strong
+                            >Wymagana długość nowej infrastruktury
+                            [kmtp]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-project-diagram m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings2_newWires"
+                            name="settings[2][newWires]"
+                            value="0"
+                            min="0"
+                            placeholder="New wires"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings2_modernisedWires"
+                          ><strong
+                            >Wymagana długość modernizowanej infrastruktury
+                            [kmtp]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-retweet m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings2_modernisedWires"
+                            name="settings[2][modernisedWires]"
+                            value="0"
+                            min="0"
+                            placeholder="Modernised wires"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings2_newDistance"
+                          ><strong
+                            >Długość trasy pokonywanej pod nową siecią trakcyjną
+                            [%]</strong
+                          ></label
+                        >
+                        <div class="row">
+                          <div class="input-group">
+                            <input
+                              id="settings2_newDistance"
+                              name="settings[2][newDistance]"
+                              value="0"
+                              min="0"
+                              max="100"
+                              step="1"
+                              type="range"
+                              required=""
+                              oninput="overallDistance2(this.value);"
+                              class="form-range"
+                            />
+                          </div>
+                          <span id="overallDistance2val">0</span>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings2_modernisedDistance"
+                          ><strong
+                            >Długość trasy pokonywanej pod modernizowaną siecią
+                            trakcyjną [%]</strong
+                          ></label
+                        >
+                        <div class="row">
+                          <div class="input-group">
+                            <input
+                              id="settings2_modernisedDistance"
+                              name="settings[2][modernisedDistance]"
+                              value="0"
+                              min="0"
+                              max="100"
+                              step="1"
+                              type="range"
+                              required=""
+                              oninput="modernisedDistance2(this.value);"
+                              class="form-range"
+                            />
+                          </div>
+                          <span id="modernisedDistance2val">0</span>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings2_overallDistance"
+                          ><strong
+                            >Łączna długość trasy pokonywanej pod siecią
+                            trakcyjną [%]</strong
+                          ></label
+                        >
+                        <div class="row">
+                          <div class="input-group">
+                            <input
+                              id="settings2_overallDistance"
+                              name="settings[2][overallDistance]"
+                              value="0"
+                              min="0"
+                              max="100"
+                              step="1"
+                              type="range"
+                              required=""
+                              oninput="overallDistance2(this.value);"
+                              class="form-range"
+                            />
+                          </div>
+                          <span id="overallDistance2val">0</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- EV 3 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <h1 class="display-4">EV 3</h1>
+                      </div>
+
+                      <!-- Input group -->
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings3_energyCost"
+                          ><strong
+                            >Cena jednostkowa energii [EUR/kWh]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-euro-sign m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings3_energyCost"
+                            name="settings[3][energyCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Energy cost"
+                            step="0.01"
+                            type="number"
+                            required
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings3_electricCost"
+                          ><strong
+                            >Stały koszt energii elektrycznej (jeśli występuje)
+                            [EUR/miesiąc]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-plug m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings3_electricCost"
+                            name="settings[3][electricCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings3_batteryCapacity"
+                          ><strong
+                            >Wymagana pojemność baterii [kWh]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-bolt m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings3_batteryCapacity"
+                            name="settings[3][batteryCapacity]"
+                            value="0"
+                            min="0"
+                            placeholder="Battery capacity"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings3_chargersNumber"
+                          ><strong
+                            >Wymagana liczba ładowarek [sztuki]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-charging-station m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings3_chargersNumber"
+                            name="settings[3][chargersNumber]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Chargers number"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings3_newWires"
+                          ><strong
+                            >Wymagana długość nowej infrastruktury
+                            [kmtp]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-project-diagram m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings3_newWires"
+                            name="settings[3][newWires]"
+                            value="0"
+                            min="0"
+                            placeholder="New wires"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings3_modernisedWires"
+                          ><strong
+                            >Wymagana długość modernizowanej infrastruktury
+                            [kmtp]</strong
+                          ></label
+                        >
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-retweet m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings3_modernisedWires"
+                            name="settings[3][modernisedWires]"
+                            value="0"
+                            min="0"
+                            placeholder="Modernised wires"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="settings3_newDistance"
+                          ><strong
+                            >Długość trasy pokonywanej pod nową siecią trakcyjną
+                            [%]</strong
+                          ></label
+                        >
+                        <div class="row">
+                          <div class="input-group">
+                            <input
+                              id="settings3_newDistance"
+                              name="settings[3][newDistance]"
+                              value="0"
+                              min="0"
+                              max="100"
+                              step="1"
+                              type="range"
+                              required=""
+                              oninput="overallDistance3(this.value);"
+                              class="form-range"
+                            />
+                          </div>
+                          <span id="overallDistance3val">0</span>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings3_modernisedDistance"
+                          ><strong
+                            >Długość trasy pokonywanej pod modernizowaną siecią
+                            trakcyjną [%]</strong
+                          ></label
+                        >
+                        <div class="row">
+                          <div class="input-group">
+                            <input
+                              id="settings3_modernisedDistance"
+                              name="settings[3][modernisedDistance]"
+                              value="0"
+                              min="0"
+                              max="100"
+                              step="1"
+                              type="range"
+                              required=""
+                              oninput="modernisedDistance3(this.value);"
+                              class="form-range"
+                            />
+                          </div>
+
+                          <span id="modernisedDistance3val">0</span>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          class="form-label"
+                          for="settings3_overallDistance"
+                          ><strong
+                            >Łączna długość trasy pokonywanej pod siecią
+                            trakcyjną [%]</strong
+                          ></label
+                        >
+                        <div class="row">
+                          <div class="input-group">
+                            <input
+                              id="settings3_overallDistance"
+                              name="settings[3][overallDistance]"
+                              value="0"
+                              min="0"
+                              max="100"
+                              step="1"
+                              type="range"
+                              required=""
+                              oninput="overallDistance3(this.value);"
+                              class="form-range"
+                            />
+                          </div>
+                          <span id="overallDistance3val">0</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-label" for="settings0_externalities"
+                          ><strong>Zestaw danych wejściowych</strong></label
+                        >
+                        <select
+                          class="form-select"
+                          id="settings0_externalities"
+                          name="settings[0][externalities]"
+                          required=""
+                          aria-label="Default select example"
+                        >
+                          <option value="1">Austria</option>
+                          <option value="2">Belgia</option>
+                          <option value="3">Bułgaria</option>
+                          <option value="4">Chorwacja</option>
+                          <option value="5">Cypr</option>
+                          <option value="6">Czechy</option>
+                          <option value="7">Dania</option>
+                          <option value="9">Estonia</option>
+                          <option value="11">Finlandia</option>
+                          <option value="12">Francja</option>
+                          <option value="13">Grecja</option>
+                          <option value="10">Hiszpania</option>
+                          <option value="21">Holandia</option>
+                          <option value="15">Irlandia</option>
+                          <option value="17">Litwa</option>
+                          <option value="18">Luksembourg</option>
+                          <option value="19">Łotwa</option>
+                          <option value="20">Malta</option>
+                          <option value="8">Niemcy</option>
+                          <option value="22">Polska</option>
+                          <option value="23">Portugalia</option>
+                          <option value="24">Rumunia</option>
+                          <option value="26">Słowacja</option>
+                          <option value="25">Słowenia</option>
+                          <option value="27">Szwecja</option>
+                          <option value="14">Węgry</option>
+                          <option value="28">Wielka Brytania</option>
+                          <option value="16">Włochy</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-label" for="settings0_externalities"
+                          ><strong>Typ miasta / ruchu</strong></label
+                        >
+                        <select
+                          class="form-select"
+                          id="settings0_cityType"
+                          name="settings[0][cityType]"
+                          required=""
+                          aria-label="Default select example"
+                        >
+                          <option value="1">wiejski</option>
+                          <option value="2">podmiejski</option>
+                          <option value="3">miejski</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row justify-content-center mt-3">
+                    <div class="form-group" style="text-align: right">
+                      <div class="col-lg-12">
+                        <button type="reset" class="btn btn-secondary">
+                          Resetuj
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                          Zatwierdź
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
