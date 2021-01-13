@@ -58,7 +58,7 @@
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="/">English</a></li>
                 <li>
-                  <a class="dropdown-item" href="/">Polski</a>
+                  <a class="dropdown-item" href="/pl.html">Polski</a>
                 </li>
               </ul>
             </div>
@@ -260,11 +260,11 @@
                               step="1"
                               type="range"
                               required=""
-                              oninput="overallDistance0(this.value);"
+                              oninput="newDistance0(this.value);"
                               class="form-range"
                             />
                           </div>
-                          <span id="overallDistance0val">0</span>
+                          <span id="newDistance0val">0</span>
                         </div>
                       </div>
 
@@ -513,11 +513,11 @@
                               step="1"
                               type="range"
                               required=""
-                              oninput="overallDistance1(this.value);"
+                              oninput="newDistance1(this.value);"
                               class="form-range"
                             />
                           </div>
-                          <span id="overallDistance1val">0</span>
+                          <span id="newDistance1val">0</span>
                         </div>
                       </div>
 
@@ -770,11 +770,11 @@
                               step="1"
                               type="range"
                               required=""
-                              oninput="overallDistance2(this.value);"
+                              oninput="newDistance2(this.value);"
                               class="form-range"
                             />
                           </div>
-                          <span id="overallDistance2val">0</span>
+                          <span id="newDistance2val">0</span>
                         </div>
                       </div>
 
@@ -1024,11 +1024,11 @@
                               step="1"
                               type="range"
                               required=""
-                              oninput="overallDistance3(this.value);"
+                              oninput="newDistance3(this.value);"
                               class="form-range"
                             />
                           </div>
-                          <span id="overallDistance3val">0</span>
+                          <span id="newDistance3val">0</span>
                         </div>
                       </div>
 
@@ -1158,7 +1158,11 @@
                   <div class="row justify-content-center mt-3">
                     <div class="form-group" style="text-align: right">
                       <div class="col-lg-12">
-                        <button type="reset" class="btn btn-secondary">
+                        <button
+                          type="reset"
+                          onclick="resetAllRange()"
+                          class="btn btn-secondary"
+                        >
                           Resetuj
                         </button>
                         <button type="submit" class="btn btn-primary">
