@@ -14,6 +14,11 @@
     ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/rangeController.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -38,7 +43,13 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
   </head>
-  <body style="font-family: 'Varela Round', sans-serif">
+  <body
+    style="
+      font-family: 'Varela Round', sans-serif;
+      padding-left: 12px;
+      padding-right: 12px;
+    "
+  >
     <div id="app">
       <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container align-baseline">
@@ -66,29 +77,100 @@
         </div>
       </nav>
 
+      <script>
+        $(function () {
+          function CheckLimit($group, ev) {
+            const val = (i) => parseInt($group[i].value);
+
+            const limitReached = val(2) < val(1) + val(0);
+            if (limitReached) {
+              if (ev.currentTarget.id === $group[2].id)
+                ev.currentTarget.value = val(1) + val(0);
+              else if (ev.currentTarget.id === $group[1].id)
+                ev.currentTarget.value = val(2) - val(0);
+              else ev.currentTarget.value = val(2) - val(1);
+              ev.preventDefault();
+              return false;
+            }
+            return true;
+          }
+
+          function CheckLimit2($group, ev) {
+            const val = (i) => parseInt($group[i].value);
+
+            let total = val(2) - val(1) - val(0);
+            if (total >= 0) return true;
+
+            if (ev.currentTarget.id === $group[2].id) {
+              if (val(1) > 0) {
+                let setValue = val(1) + total;
+                if (setValue < 0) {
+                  $group[1].value = 0;
+                  total = setValue;
+                } else {
+                  $group[1].value = setValue;
+                  total = 0;
+                }
+                $group.slice(1, 2).trigger("input");
+              }
+              if (total < 0)
+                $group
+                  .first()
+                  .val(val(0) + total)
+                  .trigger("input");
+            } else if (ev.currentTarget.id === $group[1].id) {
+              if (val(2) < 100) {
+                let setValue = val(2) - total;
+                $group.last().val(setValue).trigger("input");
+              } else {
+                $group[1].value = val(2) - val(0);
+                ev.preventDefault();
+                return false;
+              }
+            } else if (val(2) < 100) {
+              let setValue = val(2) - total;
+              $group.last().val(setValue).trigger("input");
+            } else {
+              $group[0].value = val(2) - val(1);
+              ev.preventDefault();
+              return false;
+            }
+          }
+          const $group1 = $(
+            "#settings0_newDistance,#settings0_modernisedDistance,#settings0_overallDistance"
+          ).on("input", (ev) => CheckLimit2($group1, ev));
+          const $group2 = $(
+            "#settings1_newDistance,#settings1_modernisedDistance,#settings1_overallDistance"
+          ).on("input", (ev) => CheckLimit2($group2, ev));
+          const $group3 = $(
+            "#settings2_newDistance,#settings2_modernisedDistance,#settings2_overallDistance"
+          ).on("input", (ev) => CheckLimit2($group3, ev));
+          const $group4 = $(
+            "#settings3_newDistance,#settings3_modernisedDistance,#settings3_overallDistance"
+          ).on("input", (ev) => CheckLimit2($group4, ev));
+        });
+      </script>
+
       <main class="py-4">
         <div class="container">
           <div class="col-lg-12">
             <div class="well">
-              <form action="" class="form-horizontal" id="mainFormInput">
+              <form action="" id="mainFormInput">
                 <fieldset>
-                  <div class="row justify-content-center">
-                    <!-- DIESEL -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <h1 class="display-4">Diesel</h1>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings0_energyCost"
-                          ><strong>Energy unitary cost [EUR/kWh]</strong></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-euro-sign m-1"></i>
-                            </div>
+                  <div class="form-group">
+                    <label
+                      for="settings0_energyCost"
+                      class="col-lg-4 form-label"
+                      ><strong>Energy unitary cost [EUR/kWh]</strong></label
+                    >
+                    <div class="row mb-1">
+                      <div class="col-lg-3">
+                        <label for="settings0_energyCost">Diesel</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-text">
+                            <i class="fas fa-euro-sign m-1"></i>
                           </div>
+
                           <input
                             id="settings0_energyCost"
                             name="settings[0][energyCost]"
@@ -97,23 +179,88 @@
                             placeholder="Energy cost"
                             step="0.01"
                             type="number"
-                            required
+                            required=""
                             class="form-control"
                           />
                         </div>
                       </div>
+                      <div class="col-lg-3">
+                        <label for="settings0_energyCost">EV 1</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-text">
+                            <i class="fas fa-euro-sign m-1"></i>
+                          </div>
 
-                      <div class="form-group">
-                        <label class="form-label" for="settings0_electricCost"
-                          ><strong
-                            >Fixed cost of electric power (if any)
-                            [EUR/month]</strong
-                          ></label
-                        >
+                          <input
+                            id="settings1_energyCost"
+                            name="settings[1][energyCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Energy cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <label for="settings0_energyCost">EV 2</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-text">
+                            <i class="fas fa-euro-sign m-1"></i>
+                          </div>
+
+                          <input
+                            id="settings2_energyCost"
+                            name="settings[2][energyCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Energy cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <label for="settings0_energyCost">EV 3</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-text">
+                            <i class="fas fa-euro-sign m-1"></i>
+                          </div>
+
+                          <input
+                            id="settings3_energyCost"
+                            name="settings[3][energyCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Energy cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="settings0_electricCost" class="form-label"
+                      ><strong
+                        >Fixed cost of electric power (if any)
+                        [EUR/month]</strong
+                      ></label
+                    >
+                    <div class="row mb-1">
+                      <div class="col-lg-3">
+                        <label for="settings0_electricCost">Diesel</label>
                         <div class="input-group mb-2">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
-                              <i class="fas fa-plug m-1"></i>
+                              <i class="fas fa-bolt m-1"></i>
                             </div>
                           </div>
                           <input
@@ -129,15 +276,8 @@
                           />
                         </div>
                       </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings0_batteryCapacity"
-                          ><strong
-                            >Battery capacity required [kWh]</strong
-                          ></label
-                        >
+                      <div class="col-lg-3">
+                        <label for="settings1_electricCost">EV 1</label>
                         <div class="input-group mb-2">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -145,26 +285,164 @@
                             </div>
                           </div>
                           <input
-                            id="settings0_batteryCapacity"
-                            name="settings[0][batteryCapacity]"
-                            value="0"
-                            min="0"
-                            placeholder="Battery capacity"
-                            step="1"
+                            id="settings1_electricCost"
+                            name="settings[1][electricCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
                             type="number"
                             required=""
                             class="form-control"
                           />
                         </div>
                       </div>
+                      <div class="col-lg-3">
+                        <label for="settings2_electricCost">EV 2</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-bolt m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings2_electricCost"
+                            name="settings[2][electricCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <label for="settings3_electricCost">EV 3</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-bolt m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings1_electricCost"
+                            name="settings[1][electricCost]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-                      <div class="form-group">
-                        <label class="form-label" for="settings0_chargersNumber"
-                          ><strong
-                            >Number of opportunity chargers required
-                            [pcs]</strong
-                          ></label
-                        >
+                  <div class="form-group">
+                    <label class="form-label" for="settings0_batteryCapacity"
+                      ><strong>Battery capacity required [kWh]</strong></label
+                    >
+                    <div class="row mb-1">
+                      <div class="col-lg-3">
+                        <label for="settings0_batteryCapacity">Diesel</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-battery-three-quarters m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings0_batteryCapacity"
+                            name="settings[0][batteryCapacity]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <label for="settings1_batteryCapacity">EV 1</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-battery-three-quarters m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings1_batteryCapacity"
+                            name="settings[1][batteryCapacity]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <label for="settings2_batteryCapacity">EV 2</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-battery-three-quarters m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings2_batteryCapacity"
+                            name="settings[2][batteryCapacity]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <label for="settings3_batteryCapacity">EV 3</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-battery-three-quarters m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings3_batteryCapacity"
+                            name="settings[3][batteryCapacity]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="settings0_chargersNumber"
+                      ><strong
+                        >Number of opportunity chargers required [pcs]</strong
+                      ></label
+                    >
+                    <div class="row mb-1">
+                      <div class="col-lg-3">
+                        <label for="settings0_chargersNumber">Diesel</label>
                         <div class="input-group mb-2">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -176,7 +454,7 @@
                             name="settings[0][chargersNumber]"
                             value="0.00"
                             min="0.00"
-                            placeholder="Chargers number"
+                            placeholder="Electric power cost"
                             step="0.01"
                             type="number"
                             required=""
@@ -184,13 +462,81 @@
                           />
                         </div>
                       </div>
+                      <div class="col-lg-3">
+                        <label for="settings1_chargersNumber">EV 1</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-charging-station m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings1_chargersNumber"
+                            name="settings[1][chargersNumber]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <label for="settings2_chargersNumber">EV 2</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-charging-station m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings2_chargersNumber"
+                            name="settings[2][chargersNumber]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <label for="settings3_chargersNumber">EV 3</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-charging-station m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings3_chargersNumber"
+                            name="settings[3][chargersNumber]"
+                            value="0.00"
+                            min="0.00"
+                            placeholder="Electric power cost"
+                            step="0.01"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-                      <div class="form-group">
-                        <label class="form-label" for="settings0_newWires"
-                          ><strong
-                            >New overhead wires required [kmtp]</strong
-                          ></label
-                        >
+                  <div class="form-group">
+                    <label class="form-label" for="settings1_newWires"
+                      ><strong
+                        >New overhead wires required [kmtp]</strong
+                      ></label
+                    >
+                    <div class="row mb-1">
+                      <div class="col-lg-3">
+                        <label for="settings0_chargersNumber">Diesel</label>
                         <div class="input-group mb-2">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -210,236 +556,8 @@
                           />
                         </div>
                       </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings0_modernisedWires"
-                          ><strong
-                            >Modernised overhead wires required [kmtp]</strong
-                          ></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-retweet m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings0_modernisedWires"
-                            name="settings[0][modernisedWires]"
-                            value="0"
-                            min="0"
-                            placeholder="Modernised wires"
-                            step="1"
-                            type="number"
-                            required=""
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings0_newDistance"
-                          ><strong
-                            >Distance travelled under new overhead wires
-                            [%]</strong
-                          ></label
-                        >
-                        <div class="row">
-                          <div class="input-group">
-                            <input
-                              id="settings0_newDistance"
-                              name="settings[0][newDistance]"
-                              value="0"
-                              min="0"
-                              max="100"
-                              step="1"
-                              type="range"
-                              required=""
-                              oninput="newDistance0(this.value);"
-                              class="form-range"
-                            />
-                          </div>
-                          <span id="newDistance0val">0</span>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings0_modernisedDistance"
-                          ><strong
-                            >Distance travelled under modernised overhead wires
-                            [%]</strong
-                          ></label
-                        >
-                        <div class="row">
-                          <div class="input-group">
-                            <input
-                              id="settings0_modernisedDistance"
-                              name="settings[0][modernisedDistance]"
-                              value="0"
-                              min="0"
-                              max="100"
-                              step="1"
-                              type="range"
-                              required=""
-                              oninput="modernisedDistance0(this.value);"
-                              class="form-range"
-                            />
-                          </div>
-                          <span id="modernisedDistance0val">0</span>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings0_overallDistance"
-                          ><strong
-                            >Overall distance travelled under overhead wires
-                            [%]</strong
-                          ></label
-                        >
-                        <div class="row">
-                          <div class="input-group">
-                            <input
-                              id="settings0_overallDistance"
-                              name="settings[0][overallDistance]"
-                              value="0"
-                              min="0"
-                              max="100"
-                              step="1"
-                              type="range"
-                              required=""
-                              oninput="overallDistance0(this.value);"
-                              class="form-range"
-                            />
-                          </div>
-                          <span id="overallDistance0val">0</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- EV 1 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <h1 class="display-4">EV 1</h1>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings1_energyCost"
-                          ><strong>Energy unitary cost [EUR/kWh]</strong></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-euro-sign m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings1_energyCost"
-                            name="settings[1][energyCost]"
-                            value="0.00"
-                            min="0.00"
-                            placeholder="Energy cost"
-                            step="0.01"
-                            type="number"
-                            required
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings1_electricCost"
-                          ><strong
-                            >Fixed cost of electric power (if any)
-                            [EUR/month]</strong
-                          ></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-plug m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings1_electricCost"
-                            name="settings[1][electricCost]"
-                            value="0.00"
-                            min="0.00"
-                            placeholder="Electric power cost"
-                            step="0.01"
-                            type="number"
-                            required=""
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings1_batteryCapacity"
-                          ><strong
-                            >Battery capacity required [kWh]</strong
-                          ></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-bolt m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings1_batteryCapacity"
-                            name="settings[1][batteryCapacity]"
-                            value="0"
-                            min="0"
-                            placeholder="Battery capacity"
-                            step="1"
-                            type="number"
-                            required=""
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings1_chargersNumber"
-                          ><strong
-                            >Number of opportunity chargers required
-                            [pcs]</strong
-                          ></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-charging-station m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings1_chargersNumber"
-                            name="settings[1][chargersNumber]"
-                            value="0.00"
-                            min="0.00"
-                            placeholder="Chargers number"
-                            step="0.01"
-                            type="number"
-                            required=""
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings1_newWires"
-                          ><strong
-                            >New overhead wires required [kmtp]</strong
-                          ></label
-                        >
+                      <div class="col-lg-3">
+                        <label for="settings1_chargersNumber">EV 1</label>
                         <div class="input-group mb-2">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -459,240 +577,8 @@
                           />
                         </div>
                       </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings1_modernisedWires"
-                          ><strong
-                            >Modernised overhead wires required [kmtp]</strong
-                          ></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-retweet m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings1_modernisedWires"
-                            name="settings[1][modernisedWires]"
-                            value="0"
-                            min="0"
-                            placeholder="Modernised wires"
-                            step="1"
-                            type="number"
-                            required=""
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings1_newDistance"
-                          ><strong
-                            >Distance travelled under new overhead wires
-                            [%]</strong
-                          ></label
-                        >
-                        <div class="row">
-                          <div class="input-group">
-                            <input
-                              id="settings1_newDistance"
-                              name="settings[1][newDistance]"
-                              value="0"
-                              min="0"
-                              max="100"
-                              step="1"
-                              type="range"
-                              required=""
-                              oninput="newDistance1(this.value);"
-                              class="form-range"
-                            />
-                          </div>
-                          <span id="newDistance1val">0</span>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings1_modernisedDistance"
-                          ><strong
-                            >Distance travelled under modernised overhead wires
-                            [%]</strong
-                          ></label
-                        >
-                        <div class="row">
-                          <div class="input-group">
-                            <input
-                              id="settings1_modernisedDistance"
-                              name="settings[1][modernisedDistance]"
-                              value="0"
-                              min="0"
-                              max="100"
-                              step="1"
-                              type="range"
-                              required=""
-                              oninput="modernisedDistance1(this.value);"
-                              class="form-range"
-                            />
-                          </div>
-                          <span id="modernisedDistance1val">0</span>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings1_overallDistance"
-                          ><strong
-                            >Overall distance travelled under overhead wires
-                            [%]</strong
-                          ></label
-                        >
-                        <div class="row">
-                          <div class="input-group">
-                            <input
-                              id="settings1_overallDistance"
-                              name="settings[1][overallDistance]"
-                              value="0"
-                              min="0"
-                              max="100"
-                              step="1"
-                              type="range"
-                              required=""
-                              oninput="overallDistance1(this.value);"
-                              class="form-range"
-                            />
-                          </div>
-                          <span id="overallDistance1val">0</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row justify-content-center">
-                    <!-- EV  2-->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <h1 class="display-4">EV 2</h1>
-                      </div>
-
-                      <!-- Input group -->
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings2_energyCost"
-                          ><strong>Energy unitary cost [EUR/kWh]</strong></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-euro-sign m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings2_energyCost"
-                            name="settings[2][energyCost]"
-                            value="0.00"
-                            min="0.00"
-                            placeholder="Energy cost"
-                            step="0.01"
-                            type="number"
-                            required
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings2_electricCost"
-                          ><strong
-                            >Fixed cost of electric power (if any)
-                            [EUR/month]</strong
-                          ></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-plug m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings2_electricCost"
-                            name="settings[2][electricCost]"
-                            value="0.00"
-                            min="0.00"
-                            placeholder="Electric power cost"
-                            step="0.01"
-                            type="number"
-                            required=""
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings2_batteryCapacity"
-                          ><strong
-                            >Battery capacity required [kWh]</strong
-                          ></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-bolt m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings2_batteryCapacity"
-                            name="settings[2][batteryCapacity]"
-                            value="0"
-                            min="0"
-                            placeholder="Battery capacity"
-                            step="1"
-                            type="number"
-                            required=""
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings2_chargersNumber"
-                          ><strong
-                            >Number of opportunity chargers required
-                            [pcs]</strong
-                          ></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-charging-station m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings2_chargersNumber"
-                            name="settings[2][chargersNumber]"
-                            value="0.00"
-                            min="0.00"
-                            placeholder="Chargers number"
-                            step="0.01"
-                            type="number"
-                            required=""
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings2_newWires"
-                          ><strong
-                            >New overhead wires required [kmtp]</strong
-                          ></label
-                        >
+                      <div class="col-lg-3">
+                        <label for="settings2_chargersNumber">EV 2</label>
                         <div class="input-group mb-2">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -712,238 +598,8 @@
                           />
                         </div>
                       </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings2_modernisedWires"
-                          ><strong
-                            >Modernised overhead wires required [kmtp]</strong
-                          ></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-retweet m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings2_modernisedWires"
-                            name="settings[2][modernisedWires]"
-                            value="0"
-                            min="0"
-                            placeholder="Modernised wires"
-                            step="1"
-                            type="number"
-                            required=""
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings2_newDistance"
-                          ><strong
-                            >Distance travelled under new overhead wires
-                            [%]</strong
-                          ></label
-                        >
-                        <div class="row">
-                          <div class="input-group">
-                            <input
-                              id="settings2_newDistance"
-                              name="settings[2][newDistance]"
-                              value="0"
-                              min="0"
-                              max="100"
-                              step="1"
-                              type="range"
-                              required=""
-                              oninput="newDistance2(this.value);"
-                              class="form-range"
-                            />
-                          </div>
-                          <span id="newDistance2val">0</span>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings2_modernisedDistance"
-                          ><strong
-                            >Distance travelled under modernised overhead wires
-                            [%]</strong
-                          ></label
-                        >
-                        <div class="row">
-                          <div class="input-group">
-                            <input
-                              id="settings2_modernisedDistance"
-                              name="settings[2][modernisedDistance]"
-                              value="0"
-                              min="0"
-                              max="100"
-                              step="1"
-                              type="range"
-                              required=""
-                              oninput="modernisedDistance2(this.value);"
-                              class="form-range"
-                            />
-                          </div>
-                          <span id="modernisedDistance2val">0</span>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings2_overallDistance"
-                          ><strong
-                            >Overall distance travelled under overhead wires
-                            [%]</strong
-                          ></label
-                        >
-                        <div class="row">
-                          <div class="input-group">
-                            <input
-                              id="settings2_overallDistance"
-                              name="settings[2][overallDistance]"
-                              value="0"
-                              min="0"
-                              max="100"
-                              step="1"
-                              type="range"
-                              required=""
-                              oninput="overallDistance2(this.value);"
-                              class="form-range"
-                            />
-                          </div>
-                          <span id="overallDistance2val">0</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- EV 3 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <h1 class="display-4">EV 3</h1>
-                      </div>
-
-                      <!-- Input group -->
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings3_energyCost"
-                          ><strong>Energy unitary cost [EUR/kWh]</strong></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-euro-sign m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings3_energyCost"
-                            name="settings[3][energyCost]"
-                            value="0.00"
-                            min="0.00"
-                            placeholder="Energy cost"
-                            step="0.01"
-                            type="number"
-                            required
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings3_electricCost"
-                          ><strong
-                            >Fixed cost of electric power (if any)
-                            [EUR/month]</strong
-                          ></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-plug m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings3_electricCost"
-                            name="settings[3][electricCost]"
-                            value="0.00"
-                            min="0.00"
-                            placeholder="Electric power cost"
-                            step="0.01"
-                            type="number"
-                            required=""
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings3_batteryCapacity"
-                          ><strong
-                            >Battery capacity required [kWh]</strong
-                          ></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-bolt m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings3_batteryCapacity"
-                            name="settings[3][batteryCapacity]"
-                            value="0"
-                            min="0"
-                            placeholder="Battery capacity"
-                            step="1"
-                            type="number"
-                            required=""
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings3_chargersNumber"
-                          ><strong
-                            >Number of opportunity chargers required
-                            [pcs]</strong
-                          ></label
-                        >
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-charging-station m-1"></i>
-                            </div>
-                          </div>
-                          <input
-                            id="settings3_chargersNumber"
-                            name="settings[3][chargersNumber]"
-                            value="0.00"
-                            min="0.00"
-                            placeholder="Chargers number"
-                            step="0.01"
-                            type="number"
-                            required=""
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="form-label" for="settings3_newWires"
-                          ><strong
-                            >New overhead wires required [kmtp]</strong
-                          ></label
-                        >
+                      <div class="col-lg-3">
+                        <label for="settings3_chargersNumber">EV 3</label>
                         <div class="input-group mb-2">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -963,15 +619,81 @@
                           />
                         </div>
                       </div>
+                    </div>
+                  </div>
 
-                      <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings3_modernisedWires"
-                          ><strong
-                            >Modernised overhead wires required [kmtp]</strong
-                          ></label
-                        >
+                  <div class="form-group">
+                    <label class="form-label" for="settings1_modernisedWires"
+                      ><strong
+                        >Modernised overhead wires required [kmtp]</strong
+                      ></label
+                    >
+                    <div class="row mb-1">
+                      <div class="col-lg-3">
+                        <label for="settings0_modernisedWires">Diesel</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-retweet m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings0_modernisedWires"
+                            name="settings[0][modernisedWires]"
+                            value="0"
+                            min="0"
+                            placeholder="Modernised wires"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <label for="settings1_modernisedWires">EV 1</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-retweet m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings1_modernisedWires"
+                            name="settings[1][modernisedWires]"
+                            value="0"
+                            min="0"
+                            placeholder="Modernised wires"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <label for="settings2_modernisedWires">EV 2</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-retweet m-1"></i>
+                            </div>
+                          </div>
+                          <input
+                            id="settings2_modernisedWires"
+                            name="settings[2][modernisedWires]"
+                            value="0"
+                            min="0"
+                            placeholder="Modernised wires"
+                            step="1"
+                            type="number"
+                            required=""
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <label for="settings3_modernisedWires">EV 3</label>
                         <div class="input-group mb-2">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -991,91 +713,341 @@
                           />
                         </div>
                       </div>
+                    </div>
+                  </div>
 
+                  <div
+                    class="row justify-content-center mt-3"
+                    id="settings_newDistance"
+                  >
+                    <label class="form-label" for="settings0_newDistance"
+                      ><strong
+                        >Distance travelled under new overhead wires [%]</strong
+                      ></label
+                    >
+                    <div class="col-lg-3">
+                      <label for="settings0_newDistance">Diesel</label>
                       <div class="form-group">
-                        <label class="form-label" for="settings3_newDistance"
-                          ><strong
-                            >Distance travelled under new overhead wires
-                            [%]</strong
-                          ></label
-                        >
-                        <div class="row">
-                          <div class="input-group">
-                            <input
-                              id="settings3_newDistance"
-                              name="settings[3][newDistance]"
-                              value="0"
-                              min="0"
-                              max="100"
-                              step="1"
-                              type="range"
-                              required=""
-                              oninput="newDistance3(this.value);"
-                              class="form-range"
-                            />
-                          </div>
-                          <span id="newDistance3val">0</span>
-                        </div>
+                        <span
+                          ><input
+                            id="settings0_newDistance"
+                            name="settings[0][newDistance]"
+                            value="0"
+                            min="0"
+                            max="100"
+                            step="1"
+                            type="range"
+                            required=""
+                            class="form-range" /></span
+                        ><span class="badge bg-primary float-end">0</span>
                       </div>
-
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="settings1_newDistance">EV 1</label>
                       <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings3_modernisedDistance"
-                          ><strong
-                            >Distance travelled under modernised overhead wires
-                            [%]</strong
-                          ></label
-                        >
-                        <div class="row">
-                          <div class="input-group">
-                            <input
-                              id="settings3_modernisedDistance"
-                              name="settings[3][modernisedDistance]"
-                              value="0"
-                              min="0"
-                              max="100"
-                              step="1"
-                              type="range"
-                              required=""
-                              oninput="modernisedDistance3(this.value);"
-                              class="form-range"
-                            />
-                          </div>
-                          <span id="modernisedDistance3val">0</span>
-                        </div>
+                        <span
+                          ><input
+                            id="settings1_newDistance"
+                            name="settings[1][newDistance]"
+                            value="0"
+                            min="0"
+                            max="100"
+                            step="1"
+                            type="range"
+                            required=""
+                            class="form-range" /></span
+                        ><span class="badge bg-primary float-end">0</span>
                       </div>
-
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="settings2_newDistance">EV 2</label>
                       <div class="form-group">
-                        <label
-                          class="form-label"
-                          for="settings3_overallDistance"
-                          ><strong
-                            >Overall distance travelled under overhead wires
-                            [%]</strong
-                          ></label
+                        <span
+                          ><input
+                            id="settings2_newDistance"
+                            name="settings[2][newDistance]"
+                            value="0"
+                            min="0"
+                            max="100"
+                            step="1"
+                            type="range"
+                            required=""
+                            class="form-range" /></span
+                        ><span class="badge bg-primary float-end">0</span>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="settings3_newDistance">EV 3</label>
+                      <div class="form-group">
+                        <span
+                          ><input
+                            id="settings3_newDistance"
+                            name="settings[3][newDistance]"
+                            value="0"
+                            min="0"
+                            max="100"
+                            step="1"
+                            type="range"
+                            required=""
+                            class="form-range"
+                        /></span>
+                        <span
+                          id="diesel_badge"
+                          class="badge bg-primary float-end"
+                          >0</span
                         >
-                        <div class="row">
-                          <div class="input-group">
-                            <input
-                              id="settings3_overallDistance"
-                              name="settings[3][overallDistance]"
-                              value="0"
-                              min="0"
-                              max="100"
-                              step="1"
-                              type="range"
-                              required=""
-                              oninput="overallDistance3(this.value);"
-                              class="form-range"
-                            />
-                          </div>
-                          <span id="overallDistance3val">0</span>
-                        </div>
                       </div>
                     </div>
                   </div>
-                  <hr />
+                  <script>
+                    $(function () {
+                      $("#settings_newDistance input[type=range]")
+                        .on("input", (ev) =>
+                          $(ev.currentTarget)
+                            .parent()
+                            .siblings("span")
+                            .html(ev.currentTarget.value)
+                        )
+                        .trigger("input");
+                    });
+                  </script>
+
+                  <div
+                    class="row justify-content-center mt-2"
+                    id="settings_modernisedDistance"
+                  >
+                    <label class="form-label" for="settings0_modernisedDistance"
+                      ><strong
+                        >Distance travelled under modernised overhead wires
+                        [%]</strong
+                      ></label
+                    >
+                    <div class="col-lg-3">
+                      <label for="settings0_modernisedDistance">Diesel</label>
+                      <div class="form-group">
+                        <span
+                          ><input
+                            id="settings0_modernisedDistance"
+                            name="settings[0][modernisedDistance]"
+                            value="0"
+                            min="0"
+                            max="100"
+                            step="1"
+                            type="range"
+                            required=""
+                            class="form-range" /></span
+                        ><span class="badge bg-primary float-end">0</span>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="settings1_modernisedDistance">EV 1</label>
+                      <div class="form-group">
+                        <span
+                          ><input
+                            id="settings1_modernisedDistance"
+                            name="settings[1][modernisedDistance]"
+                            value="0"
+                            min="0"
+                            max="100"
+                            step="1"
+                            type="range"
+                            required=""
+                            class="form-range" /></span
+                        ><span class="badge bg-primary float-end">0</span>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="settings2_modernisedDistance">EV 2</label>
+                      <div class="form-group">
+                        <span
+                          ><input
+                            id="settings2_modernisedDistance"
+                            name="settings[2][modernisedDistance]"
+                            value="0"
+                            min="0"
+                            max="100"
+                            step="1"
+                            type="range"
+                            required=""
+                            class="form-range" /></span
+                        ><span class="badge bg-primary float-end">0</span>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="settings3_modernisedDistance">EV 3</label>
+                      <div class="form-group">
+                        <span
+                          ><input
+                            id="settings3_modernisedDistance"
+                            name="settings[3][modernisedDistance]"
+                            value="0"
+                            min="0"
+                            max="100"
+                            step="1"
+                            type="range"
+                            required=""
+                            class="form-range" /></span
+                        ><span class="badge bg-primary float-end">0</span>
+                      </div>
+                    </div>
+                  </div>
+                  <script>
+                    $(function () {
+                      $("#settings_modernisedDistance input[type=range]")
+                        .on("input", (ev) =>
+                          $(ev.currentTarget)
+                            .parent()
+                            .siblings("span")
+                            .html(ev.currentTarget.value)
+                        )
+                        .trigger("input");
+                    });
+                  </script>
+                  <div
+                    id="settings_overallDistance"
+                    class="row justify-content-center mt-2 mb-3"
+                  >
+                    <label class="form-label" for="settings0_overallDistance"
+                      ><strong
+                        >Overall distance travelled under overhead wires
+                        [%]</strong
+                      ></label
+                    >
+                    <div class="col-lg-3">
+                      <label for="settings0_overallDistance">Diesel</label>
+                      <div class="form-group">
+                        <span
+                          ><input
+                            id="settings0_overallDistance"
+                            name="settings[0][overallDistance]"
+                            value="0"
+                            min="0"
+                            oninput="checkForMax0(this.value)"
+                            max="100"
+                            step="1"
+                            type="range"
+                            required=""
+                            class="form-range" /></span
+                        ><span
+                          id="diesel_badge0"
+                          class="badge bg-primary float-end"
+                          >0</span
+                        >
+                      </div>
+                      <script>
+                        function checkForMax0(rangeValue) {
+                          var badger = document.getElementById("diesel_badge0");
+                          if (rangeValue == "100") {
+                            badger.className = "badge bg-danger float-end";
+                          } else {
+                            badger.className = "badge bg-primary float-end";
+                          }
+                        }
+                      </script>
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="settings1_overallDistance">EV 1</label>
+                      <div class="form-group">
+                        <span
+                          ><input
+                            id="settings1_overallDistance"
+                            name="settings[1][overallDistance]"
+                            value="0"
+                            min="0"
+                            max="100"
+                            oninput="checkForMax1(this.value)"
+                            step="1"
+                            type="range"
+                            required=""
+                            class="form-range" /></span
+                        ><span id="ev1_badge" class="badge bg-primary float-end"
+                          >0</span
+                        >
+                      </div>
+                      <script>
+                        function checkForMax1(rangeValue) {
+                          var badger = document.getElementById("ev1_badge");
+                          if (rangeValue == "100") {
+                            badger.className = "badge bg-danger float-end";
+                          } else {
+                            badger.className = "badge bg-primary float-end";
+                          }
+                        }
+                      </script>
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="settings2_overallDistance">EV 2</label>
+                      <div class="form-group">
+                        <span
+                          ><input
+                            id="settings2_overallDistance"
+                            name="settings[2][overallDistance]"
+                            value="0"
+                            min="0"
+                            max="100"
+                            oninput="checkForMax2(this.value)"
+                            step="1"
+                            type="range"
+                            required=""
+                            class="form-range" /></span
+                        ><span id="ev2_badge" class="badge bg-primary float-end"
+                          >0</span
+                        >
+                      </div>
+                      <script>
+                        function checkForMax2(rangeValue) {
+                          var badger = document.getElementById("ev2_badge");
+                          if (rangeValue == "100") {
+                            badger.className = "badge bg-danger float-end";
+                          } else {
+                            badger.className = "badge bg-primary float-end";
+                          }
+                        }
+                      </script>
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="settings3_overallDistance">EV 3</label>
+                      <div class="form-group">
+                        <span
+                          ><input
+                            id="settings3_overallDistance"
+                            name="settings[3][overallDistance]"
+                            value="0"
+                            min="0"
+                            max="100"
+                            oninput="checkForMax3(this.value)"
+                            step="1"
+                            type="range"
+                            required=""
+                            class="form-range" /></span
+                        ><span id="ev3_badge" class="badge bg-primary float-end"
+                          >0</span
+                        >
+                      </div>
+                      <script>
+                        function checkForMax3(rangeValue) {
+                          var badger = document.getElementById("ev3_badge");
+                          if (rangeValue == "100") {
+                            badger.className = "badge bg-danger float-end";
+                          } else {
+                            badger.className = "badge bg-primary float-end";
+                          }
+                        }
+                      </script>
+                    </div>
+                  </div>
+                  <script>
+                    $(function () {
+                      $("#settings_overallDistance input[type=range]")
+                        .on("input", (ev) =>
+                          $(ev.currentTarget)
+                            .parent()
+                            .siblings("span")
+                            .html(ev.currentTarget.value)
+                        )
+                        .trigger("input");
+                    });
+                  </script>
                   <div class="row justify-content-center">
                     <div class="col-lg-6 mb-2">
                       <div class="form-group">
