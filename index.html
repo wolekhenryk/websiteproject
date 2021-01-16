@@ -822,7 +822,6 @@
                             name="settings[0][overallDistance]"
                             value="0"
                             min="0"
-                            oninput="checkForMax0(this.value)"
                             max="100"
                             step="1"
                             type="range"
@@ -835,14 +834,23 @@
                         >
                       </div>
                       <script>
-                        function checkForMax0(rangeValue) {
-                          var badger = document.getElementById("diesel_badge0");
-                          if (rangeValue == "100") {
-                            badger.className = "badge bg-danger float-end";
-                          } else {
-                            badger.className = "badge bg-primary float-end";
-                          }
-                        }
+                        $(document).ready(function () {
+                          $(document).on(
+                            "input",
+                            "#settings0_overallDistance",
+                            function () {
+                              if ($(this).val() == "100") {
+                                $("#diesel_badge0")
+                                  .removeClass("badge bg-primary float-end")
+                                  .addClass("badge bg-danger float-end");
+                              } else {
+                                $("#diesel_badge0")
+                                  .removeClass("badge bg-danger float-end")
+                                  .addClass("badge bg-primary float-end");
+                              }
+                            }
+                          );
+                        });
                       </script>
                     </div>
                     <div class="col-lg-3">
@@ -855,7 +863,6 @@
                             value="0"
                             min="0"
                             max="100"
-                            oninput="checkForMax1(this.value)"
                             step="1"
                             type="range"
                             required=""
@@ -865,14 +872,23 @@
                         >
                       </div>
                       <script>
-                        function checkForMax1(rangeValue) {
-                          var badger = document.getElementById("ev1_badge");
-                          if (rangeValue == "100") {
-                            badger.className = "badge bg-danger float-end";
-                          } else {
-                            badger.className = "badge bg-primary float-end";
-                          }
-                        }
+                        $(document).ready(function () {
+                          $(document).on(
+                            "input",
+                            "#settings1_overallDistance",
+                            function () {
+                              if ($(this).val() == "100") {
+                                $("#ev1_badge")
+                                  .removeClass("badge bg-primary float-end")
+                                  .addClass("badge bg-danger float-end");
+                              } else {
+                                $("#ev1_badge")
+                                  .removeClass("badge bg-danger float-end")
+                                  .addClass("badge bg-primary float-end");
+                              }
+                            }
+                          );
+                        });
                       </script>
                     </div>
                     <div class="col-lg-3">
@@ -885,7 +901,6 @@
                             value="0"
                             min="0"
                             max="100"
-                            oninput="checkForMax2(this.value)"
                             step="1"
                             type="range"
                             required=""
@@ -895,14 +910,23 @@
                         >
                       </div>
                       <script>
-                        function checkForMax2(rangeValue) {
-                          var badger = document.getElementById("ev2_badge");
-                          if (rangeValue == "100") {
-                            badger.className = "badge bg-danger float-end";
-                          } else {
-                            badger.className = "badge bg-primary float-end";
-                          }
-                        }
+                        $(document).ready(function () {
+                          $(document).on(
+                            "input",
+                            "#settings2_overallDistance",
+                            function () {
+                              if ($(this).val() == "100") {
+                                $("#ev2_badge")
+                                  .removeClass("badge bg-primary float-end")
+                                  .addClass("badge bg-danger float-end");
+                              } else {
+                                $("#ev2_badge")
+                                  .removeClass("badge bg-danger float-end")
+                                  .addClass("badge bg-primary float-end");
+                              }
+                            }
+                          );
+                        });
                       </script>
                     </div>
                     <div class="col-lg-3">
@@ -915,24 +939,32 @@
                             value="0"
                             min="0"
                             max="100"
-                            oninput="checkForMax3(this.value)"
                             step="1"
                             type="range"
                             required=""
-                            class="form-range" /></span
+                            class="form-range mt-0" /></span
                         ><span id="ev3_badge" class="badge bg-primary float-end"
                           >0</span
                         >
                       </div>
                       <script>
-                        function checkForMax3(rangeValue) {
-                          var badger = document.getElementById("ev3_badge");
-                          if (rangeValue == "100") {
-                            badger.className = "badge bg-danger float-end";
-                          } else {
-                            badger.className = "badge bg-primary float-end";
-                          }
-                        }
+                        $(document).ready(function () {
+                          $(document).on(
+                            "input",
+                            "#settings3_overallDistance",
+                            function () {
+                              if ($(this).val() == "100") {
+                                $("#ev3_badge")
+                                  .removeClass("badge bg-primary float-end")
+                                  .addClass("badge bg-danger float-end");
+                              } else {
+                                $("#ev3_badge")
+                                  .removeClass("badge bg-danger float-end")
+                                  .addClass("badge bg-primary float-end");
+                              }
+                            }
+                          );
+                        });
                       </script>
                     </div>
                   </div>
